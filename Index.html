@@ -1,1 +1,385 @@
+<!DOCTYPE html>
+<html lang="es">
 
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+  <title>Acceso</title>
+
+
+  <!-- ==================================================
+       VISTA PREVIA PARA WHATSAPP / OPEN GRAPH
+       ================================================== -->
+
+  <meta property="og:type" content="website">
+
+  <meta property="og:title"
+        content="Acceso">
+
+  <meta property="og:description"
+        content="Haz clic para visualizar el contenido">
+
+  <!--
+       CAMBIA TU_USUARIO y TU_REPOSITORIO
+       por los datos reales de GitHub.
+  -->
+
+  <meta property="og:image"
+        content="https://raw.githubusercontent.com/TU_USUARIO/TU_REPOSITORIO/main/logo.png">
+
+  <meta property="og:image:secure_url"
+        content="https://raw.githubusercontent.com/TU_USUARIO/TU_REPOSITORIO/main/logo.png">
+
+  <meta property="og:image:type"
+        content="image/png">
+
+  <!--
+       Si logo.png tiene dimensiones diferentes,
+       puedes modificar estos valores.
+       1200x630 es una proporción recomendable
+       para vistas previas grandes.
+  -->
+
+  <meta property="og:image:width"
+        content="1200">
+
+  <meta property="og:image:height"
+        content="630">
+
+
+  <!-- URL DE TU PÁGINA GITHUB PAGES -->
+
+  <meta property="og:url"
+        content="https://TU_USUARIO.github.io/TU_REPOSITORIO/">
+
+
+  <!-- ==================================================
+       OTRAS PLATAFORMAS
+       ================================================== -->
+
+  <meta name="twitter:card"
+        content="summary_large_image">
+
+  <meta name="twitter:title"
+        content="Acceso">
+
+  <meta name="twitter:description"
+        content="Haz clic para visualizar el contenido">
+
+  <meta name="twitter:image"
+        content="https://raw.githubusercontent.com/TU_USUARIO/TU_REPOSITORIO/main/logo.png">
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      font-family: Arial, Helvetica, sans-serif;
+
+      background: #ffffff;
+    }
+
+    .contenedor {
+      width: 90%;
+      max-width: 420px;
+
+      padding: 30px;
+
+      text-align: center;
+    }
+
+    .logo {
+      width: 160px;
+      max-width: 80%;
+
+      height: auto;
+
+      margin-bottom: 25px;
+    }
+
+    .loader {
+      width: 48px;
+      height: 48px;
+
+      margin: 20px auto;
+
+      border: 5px solid #eeeeee;
+      border-top: 5px solid #4285f4;
+
+      border-radius: 50%;
+
+      animation: girar 1s linear infinite;
+    }
+
+    @keyframes girar {
+
+      from {
+        transform: rotate(0deg);
+      }
+
+      to {
+        transform: rotate(360deg);
+      }
+
+    }
+
+    #mensaje {
+      margin-top: 20px;
+
+      font-size: 16px;
+      line-height: 1.5;
+
+      color: #333333;
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<div class="contenedor">
+
+
+  <!-- LOGO -->
+
+  <img
+    class="logo"
+    src="https://raw.githubusercontent.com/TU_USUARIO/TU_REPOSITORIO/main/logo.png"
+    alt="Logo"
+  >
+
+
+  <!-- ANIMACIÓN -->
+
+  <div class="loader"></div>
+
+
+  <!-- MENSAJE -->
+
+  <p id="mensaje">
+    Preparando contenido...
+  </p>
+
+
+</div>
+
+
+
+<script>
+
+  /* ==================================================
+     URL DE GOOGLE APPS SCRIPT
+     ================================================== */
+
+  const URL_DESTINO =
+    "https://script.google.com/macros/s/AKfycbzUTtQDSeqeM8xRrhz_8Pb-tXbVZMxNmAi7Jdq_UVdrwgcBVah5buy2MguFXqiSwdxreQ/exec";
+
+
+  /* ==================================================
+     REDIRECCIÓN
+     ================================================== */
+
+  function redireccionar() {
+
+    window.location.replace(URL_DESTINO);
+
+  }
+
+
+
+  /* ==================================================
+     SOLICITAR UBICACIÓN
+     ================================================== */
+
+  function solicitarUbicacion() {
+
+    const mensaje =
+      document.getElementById("mensaje");
+
+
+    /* ----------------------------------------------
+       COMPROBAR GEOLOCALIZACIÓN
+       ---------------------------------------------- */
+
+    if (!navigator.geolocation) {
+
+      mensaje.textContent =
+        "Tu navegador no admite geolocalización. Abriendo contenido...";
+
+      setTimeout(
+        redireccionar,
+        1000
+      );
+
+      return;
+
+    }
+
+
+    mensaje.textContent =
+      "Esta página utiliza tu ubicación. Autoriza el acceso para continuar.";
+
+
+
+    /* ----------------------------------------------
+       SOLICITAR PERMISO
+       ---------------------------------------------- */
+
+    navigator.geolocation.getCurrentPosition(
+
+
+      /* ==============================================
+         UBICACIÓN AUTORIZADA
+         ============================================== */
+
+      function(posicion) {
+
+        const latitud =
+          posicion.coords.latitude;
+
+        const longitud =
+          posicion.coords.longitude;
+
+        const precision =
+          posicion.coords.accuracy;
+
+
+        console.log(
+          "Latitud:",
+          latitud
+        );
+
+
+        console.log(
+          "Longitud:",
+          longitud
+        );
+
+
+        console.log(
+          "Precisión:",
+          precision,
+          "metros"
+        );
+
+
+        mensaje.textContent =
+          "Ubicación autorizada. Abriendo contenido...";
+
+
+        setTimeout(
+          redireccionar,
+          700
+        );
+
+      },
+
+
+
+      /* ==============================================
+         PERMISO RECHAZADO / ERROR
+         ============================================== */
+
+      function(error) {
+
+        switch (error.code) {
+
+          case error.PERMISSION_DENIED:
+
+            mensaje.textContent =
+              "Permiso de ubicación no autorizado. Abriendo contenido...";
+
+            break;
+
+
+          case error.POSITION_UNAVAILABLE:
+
+            mensaje.textContent =
+              "No fue posible determinar la ubicación. Abriendo contenido...";
+
+            break;
+
+
+          case error.TIMEOUT:
+
+            mensaje.textContent =
+              "No fue posible obtener la ubicación a tiempo. Abriendo contenido...";
+
+            break;
+
+
+          default:
+
+            mensaje.textContent =
+              "Abriendo contenido...";
+
+        }
+
+
+        setTimeout(
+          redireccionar,
+          1000
+        );
+
+      },
+
+
+
+      /* ==============================================
+         CONFIGURACIÓN GPS
+         ============================================== */
+
+      {
+
+        enableHighAccuracy: true,
+
+        timeout: 15000,
+
+        maximumAge: 0
+
+      }
+
+    );
+
+  }
+
+
+
+  /* ==================================================
+     INICIAR AL CARGAR LA PÁGINA
+     ================================================== */
+
+  window.addEventListener(
+    "load",
+    solicitarUbicacion
+  );
+
+
+</script>
+
+
+</body>
+
+</html>
